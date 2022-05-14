@@ -1,2 +1,5 @@
 labels:
   inProgress: "s: in progress"
+prs:
+  drafts:
+    markInProgress: true
