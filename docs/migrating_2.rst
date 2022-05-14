@@ -30,6 +30,11 @@ Overview
 - Many method arguments now reject ``None``.
 - Many arguments are now specified as positional-only or keyword-only; e.g. :func:`oauth_url` now takes keyword-only arguments, and methods starting with ``get_`` or ``fetch_`` take positional-only arguments.
 - :attr:`AppInfo.summary` and :attr:`PartialAppInfo.summary` now return an empty string and will be removed in API v11.
+- :meth:`Guild.bans` is no longer a coroutine and returns an :class:`~nextcord.AsyncIterator` instead of a :class:`list`.
+- ``StoreChannel`` is removed as it is deprecated by Discord, see `here <https://support-dev.discord.com/hc/en-us/articles/4414590563479>`_ for more info.
+- ``ChannelType.store`` is removed.
+- ``AppInfo.summary``, ``AppInfo.guild_id``, ``AppInfo.primary_sku_id`` and ``AppInfo.slug`` are removed.
+- ``PartialAppInfo.summary`` is removed.
 
 Changes
 -----------------------
@@ -44,18 +49,18 @@ adapter arguments of :meth:`Webhook.partial` and :meth:`Webhook.from_url` are re
 
 .. code-block:: python3
 
-    webhook = discord.SyncWebhook.from_url(
+    webhook = nextcord.SyncWebhook.from_url(
             f"https://discord.com/api/webhooks/{id}/{token}"
         )
-    webhook.send("Hello from discord.py 2.0")
+    webhook.send("Hello from nextcord!")
     async with aiohttp.ClientSession() as session:
-        webhook = discord.Webhook.partial(
+        webhook = nextcord.Webhook.partial(
                 id,
                 token,
                 session=session
             )
-        await webhook.send("Hello from discord.py 2.0")
-        
+        await webhook.send("Hello from nextcord!")
+
 
 Asset changes
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -260,6 +265,20 @@ Guild.get_member taking positional only argument
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 :meth:`Guild.get_member` method's first argument is now positional only.
 
+Guild.bans now returns an AsyncIterator
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+:meth:`Guild.bans` returns an :class:`~nextcord.AsyncIterator` instead of a :class:`list`.
+
+.. code-block:: python3
+
+    # before
+    bans = await guild.bans()
+
+    # now
+    bans = await guild.bans().flatten()  # get a list of the first 1000 bans
+    bans = await guild.bans(limit=None).flatten()  # get a list of all bans
+
 Removals
 -----------------------
 
@@ -346,6 +365,9 @@ MessageType.application_command
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 This was renamed to :attr:`MessageType.chat_input_command` due to Discord adding context menu commands.
 
+StoreChannel has been removed
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``StoreChannel`` has been removed as it has been deprecated by Discord, see `here <https://support-dev.discord.com/hc/en-us/articles/4414590563479>`_ for more info.
 
 Meta Change
 -----------------------
@@ -366,4 +388,3 @@ Meta Change
 
 - The public API should be completely type-hinted
 - Almost all ``edit`` methods now return their updated counterpart rather than doing an in-place edit
-
