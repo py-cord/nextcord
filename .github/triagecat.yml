@@ -5,3 +5,7 @@ prs:
   drafts:
     markInProgress: true
     markAwaitingReview: true
+  reviews:
+    required: 2
+    maintainers:
+      required: 1
