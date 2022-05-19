@@ -7,5 +7,3 @@ prs:
     markAwaitingReview: true
   reviews:
     required: 2
-    maintainers:
-      required: 1
