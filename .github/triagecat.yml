@@ -1,6 +1,7 @@
 labels:
   inProgress: "s: in progress"
   awaitingReview: "s: awaiting review"
+  awaitingMerge: "s: awaiting merge"
 prs:
   drafts:
     markInProgress: true
